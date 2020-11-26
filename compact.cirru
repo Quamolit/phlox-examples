@@ -4,8 +4,11 @@
   :files $ {}
     |app.main $ {}
       :ns $ quote
-        ns app.main $ :require ([] phlox.core :refer $ [] expand-tree get-shape-tree g >> *tree-state handle-tree-event defcomp update-states circle rect text touch-area) ([] phlox.comp :refer $ [] comp-drag-point comp-slider) ([] phlox.complext :refer $ [] c* c+ c- rad-point)
+        ns app.main $ :require ([] phlox.core :refer $ [] g >> render-app! handle-tree-event defcomp update-states circle rect text touch-area) ([] phlox.comp :refer $ [] comp-drag-point comp-slider) ([] phlox.complext :refer $ [] c* c+ c- rad-point)
       :defs $ {}
+        |render-page $ quote
+          defn render-page ()
+            render-app! $ comp-demo (deref *store)
         |dispatch! $ quote
           defn dispatch! (op data)
             if (list? op) (recur :states $ [] op data) (swap! *store updater op data)
@@ -19,12 +22,11 @@
         |main! $ quote
           defn main! ()
             init-canvas $ {} (:title "\"Examples") (:width 800) (:height 800)
-            render-shape
-            add-watch *store :change $ fn (v v0) (render-shape)
-            echo "\"started"
+            render-page
+            add-watch *store :change $ fn (v v0) (render-page)
+            echo "\"Started"
         |on-window-event $ quote
           defn on-window-event (event) (handle-tree-event event dispatch!)
-            when (= |window-resized $ get event "\"type") (render-shape)
         |comp-demo $ quote
           defcomp comp-demo (store)
             let
@@ -46,14 +48,8 @@
                     circle ([] 100 100) 20 $ {} (:fill-color $ [] 200 80 70)
                     get dict :d
                 :actions $ {}
-        |render-shape $ quote
-          defn render-shape ()
-            &let
-              tree $ expand-tree (comp-demo $ deref *store)
-              reset! *tree-state tree
-              &let (info $ get-shape-tree tree) (draw-canvas info)
         |reload! $ quote
-          defn reload! () (echo "\"Reload!") (render-shape)
+          defn reload! () (echo "\"Reload!") (render-page)
         |on-error $ quote
           defn on-error (message) (; draw-error-message message)
       :proc $ quote ()

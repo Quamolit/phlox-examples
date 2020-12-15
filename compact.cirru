@@ -1,10 +1,10 @@
 
 {} (:package |app)
-  :configs $ {} (:init-fn |app.main/main!) (:reload-fn |app.main/reload!) (:modules $ [] |phlox/compact.cirru) (:version nil)
+  :configs $ {} (:init-fn |app.main/main!) (:reload-fn |app.main/reload!) (:modules $ [] |phlox/compact.cirru |memof/compact.cirru |lilac/compact.cirru) (:version nil)
   :files $ {}
     |app.main $ {}
       :ns $ quote
-        ns app.main $ :require ([] phlox.core :refer $ [] >> defcomp render-app! handle-tree-event update-states) ([] phlox.comp :refer $ [] comp-drag-point comp-slider) ([] app.comp.container :refer $ [] comp-container)
+        ns app.main $ :require ([] phlox.core :refer $ [] >> defcomp render-app! handle-tree-event update-states) ([] phlox.comp :refer $ [] comp-drag-point comp-slider) ([] app.comp.container :refer $ [] comp-container) ([] memof.alias :refer $ [] reset-memof-caches!)
       :defs $ {}
         |render-page $ quote
           defn render-page ()
@@ -28,14 +28,14 @@
         |on-window-event $ quote
           defn on-window-event (event) (handle-tree-event event dispatch!)
         |reload! $ quote
-          defn reload! () (echo "\"Reload!") (render-page)
+          defn reload! () (reset-memof-caches!) (echo "\"Reload!") (render-page)
         |on-error $ quote
           defn on-error (message) (; draw-error-message message)
       :proc $ quote ()
       :configs $ {} (:extension nil)
     |app.comp.container $ {}
       :ns $ quote
-        ns app.comp.container $ :require ([] phlox.core :refer $ [] g >> defcomp circle rect text touch-area) ([] phlox.comp :refer $ [] comp-drag-point comp-slider) ([] phlox.complex :refer $ [] c* c+ c- rad-point) ([] app.comp.primes-whirl :refer $ [] comp-primes-whirl)
+        ns app.comp.container $ :require ([] phlox.core :refer $ [] g >> defcomp circle rect text touch-area) ([] phlox.comp :refer $ [] comp-drag-point comp-slider) ([] phlox.complex :refer $ [] c* c+ c- rad-point) ([] app.comp.primes-whirl :refer $ [] comp-primes-whirl) ([] memof.alias :refer $ [] memof-call)
       :defs $ {}
         |comp-container $ quote
           defcomp comp-container (store)
@@ -50,7 +50,7 @@
                   :primes-whirl $ if (= :primes-whirl $ :tab state) (comp-primes-whirl)
                   :default $ if
                     or (nil? $ :tab state) (= :default $ :tab state)
-                    comp-default-demo $ >> states :default
+                    with-cpu-time $ memof-call comp-default-demo (>> states :default)
                 :render $ fn (dict)
                   g
                     {} (:x 0) (:y 0)

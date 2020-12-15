@@ -44,6 +44,15 @@
                       :data $ {}
                         |T $ {} (:type :leaf) (:by |u0) (:at 1607915198216) (:text |[])
                         |j $ {} (:type :leaf) (:by |u0) (:at 1607915203523) (:text |comp-container)
+                |x $ {} (:type :expr) (:by |u0) (:at 1608038332760)
+                  :data $ {}
+                    |T $ {} (:type :leaf) (:by |u0) (:at 1608038333051) (:text |[])
+                    |j $ {} (:type :leaf) (:by |u0) (:at 1608038336112) (:text |memof.alias)
+                    |r $ {} (:type :leaf) (:by |u0) (:at 1608038336964) (:text |:refer)
+                    |v $ {} (:type :expr) (:by |u0) (:at 1608038337152)
+                      :data $ {}
+                        |T $ {} (:type :leaf) (:by |u0) (:at 1608038337311) (:text |[])
+                        |j $ {} (:type :leaf) (:by |u0) (:at 1608038337710) (:text |reset-memof-caches!)
         :defs $ {}
           |render-page $ {} (:type :expr) (:by |u0) (:at 1606311428786)
             :data $ {}
@@ -212,6 +221,9 @@
               |x $ {} (:type :expr) (:by |u0) (:at 1606311740023)
                 :data $ {}
                   |T $ {} (:type :leaf) (:by |u0) (:at 1606370676396) (:text |render-page)
+              |t $ {} (:type :expr) (:by |u0) (:at 1608038325116)
+                :data $ {}
+                  |T $ {} (:type :leaf) (:by |u0) (:at 1608038329645) (:text |reset-memof-caches!)
           |on-error $ {} (:type :expr) (:by |u0) (:at 1606310757107)
             :data $ {}
               |T $ {} (:type :leaf) (:by |u0) (:at 1606310757107) (:text |defn)
@@ -280,6 +292,15 @@
                       :data $ {}
                         |T $ {} (:type :leaf) (:by |u0) (:at 1607920555458) (:text |[])
                         |j $ {} (:type :leaf) (:by |u0) (:at 1607920555458) (:text |comp-primes-whirl)
+                |y $ {} (:type :expr) (:by |u0) (:at 1608038232490)
+                  :data $ {}
+                    |T $ {} (:type :leaf) (:by |u0) (:at 1608038346193) (:text |[])
+                    |j $ {} (:type :leaf) (:by |u0) (:at 1608038349987) (:text |memof.alias)
+                    |r $ {} (:type :leaf) (:by |u0) (:at 1608038350756) (:text |:refer)
+                    |v $ {} (:type :expr) (:by |u0) (:at 1608038350950)
+                      :data $ {}
+                        |T $ {} (:type :leaf) (:by |u0) (:at 1608038351095) (:text |[])
+                        |j $ {} (:type :leaf) (:by |u0) (:at 1608038352843) (:text |memof-call)
         :defs $ {}
           |comp-container $ {} (:type :expr) (:by |u0) (:at 1607915112916)
             :data $ {}
@@ -374,14 +395,18 @@
                                                 :data $ {}
                                                   |T $ {} (:type :leaf) (:by |u0) (:at 1607915765295) (:text |:tab)
                                                   |j $ {} (:type :leaf) (:by |u0) (:at 1607915762949) (:text |state)
-                                      |r $ {} (:type :expr) (:by |u0) (:at 1607915859969)
+                                      |r $ {} (:type :expr) (:by |u0) (:at 1608038471660)
                                         :data $ {}
-                                          |D $ {} (:type :leaf) (:by |u0) (:at 1607915866055) (:text |comp-default-demo)
-                                          |b $ {} (:type :expr) (:by |u0) (:at 1607915877520)
+                                          |T $ {} (:type :expr) (:by |u0) (:at 1607915859969)
                                             :data $ {}
-                                              |T $ {} (:type :leaf) (:by |u0) (:at 1607915877951) (:text |>>)
-                                              |j $ {} (:type :leaf) (:by |u0) (:at 1607915878693) (:text |states)
-                                              |r $ {} (:type :leaf) (:by |u0) (:at 1607915879938) (:text |:default)
+                                              |D $ {} (:type :leaf) (:by |u0) (:at 1607915866055) (:text |comp-default-demo)
+                                              |b $ {} (:type :expr) (:by |u0) (:at 1607915877520)
+                                                :data $ {}
+                                                  |T $ {} (:type :leaf) (:by |u0) (:at 1607915877951) (:text |>>)
+                                                  |j $ {} (:type :leaf) (:by |u0) (:at 1607915878693) (:text |states)
+                                                  |r $ {} (:type :leaf) (:by |u0) (:at 1607915879938) (:text |:default)
+                                              |5 $ {} (:type :leaf) (:by |u0) (:at 1608038229055) (:text |memof-call)
+                                          |D $ {} (:type :leaf) (:by |u0) (:at 1608038475052) (:text |with-cpu-time)
                               |f $ {} (:type :expr) (:by |u0) (:at 1607916119005)
                                 :data $ {}
                                   |T $ {} (:type :leaf) (:by |u0) (:at 1607916120798) (:text |:tabs)
@@ -1220,4 +1245,4 @@
                           |v $ {} (:type :leaf) (:by |u0) (:at 1607923106185) (:text |limit)
         :proc $ {} (:type :expr) (:by |u0) (:at 1607920444084) (:data $ {})
         :configs $ {}
-  :configs $ {} (:extension |.cljs) (:output |src) (:port 6001) (:local-ui? false) (:compact-output? true) (:init-fn |app.main/main!) (:reload-fn |app.main/reload!) (:modules $ [] |phlox/compact.cirru)
+  :configs $ {} (:extension |.cljs) (:output |src) (:port 6001) (:local-ui? false) (:compact-output? true) (:init-fn |app.main/main!) (:reload-fn |app.main/reload!) (:modules $ [] |phlox/compact.cirru |memof/compact.cirru |lilac/compact.cirru)

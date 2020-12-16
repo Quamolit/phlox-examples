@@ -4,11 +4,12 @@
   :files $ {}
     |app.main $ {}
       :ns $ quote
-        ns app.main $ :require ([] phlox.core :refer $ [] >> defcomp render-app! handle-tree-event update-states) ([] phlox.comp :refer $ [] comp-drag-point comp-slider) ([] app.comp.container :refer $ [] comp-container) ([] memof.alias :refer $ [] reset-memof-caches!)
+        ns app.main $ :require ([] phlox.core :refer $ [] >> defcomp render-app! handle-tree-event update-states) ([] phlox.comp :refer $ [] comp-drag-point comp-slider) ([] app.comp.container :refer $ [] comp-container) ([] memof.alias :refer $ [] reset-calling-caches! tick-calling-loop!)
       :defs $ {}
         |render-page $ quote
           defn render-page ()
             render-app! $ comp-container (deref *store)
+            tick-calling-loop!
         |dispatch! $ quote
           defn dispatch! (op data)
             if (list? op) (recur :states $ [] op data) (swap! *store updater op data)
@@ -28,7 +29,7 @@
         |on-window-event $ quote
           defn on-window-event (event) (handle-tree-event event dispatch!)
         |reload! $ quote
-          defn reload! () (reset-memof-caches!) (echo "\"Reload!") (render-page)
+          defn reload! () (reset-calling-caches!) (echo "\"Reload!") (render-page)
         |on-error $ quote
           defn on-error (message) (; draw-error-message message)
       :proc $ quote ()
@@ -47,7 +48,7 @@
                 :children $ {}
                   :tabs $ comp-tabs (>> states :tabs) (:tab state)
                     fn (new-tab d!) (d! cursor $ assoc state :tab new-tab)
-                  :primes-whirl $ if (= :primes-whirl $ :tab state) (comp-primes-whirl)
+                  :primes-whirl $ if (= :primes-whirl $ :tab state) (with-cpu-time $ memof-call comp-primes-whirl)
                   :default $ if
                     or (nil? $ :tab state) (= :default $ :tab state)
                     with-cpu-time $ memof-call comp-default-demo (>> states :default)
@@ -55,8 +56,7 @@
                   g
                     {} (:x 0) (:y 0)
                     get dict :tabs
-                    get dict $ :tab state
-                    if (nil? $ :tab state) (get dict :default)
+                    if (nil? $ :tab state) (get dict :default) (get dict $ :tab state)
                 :actions $ {}
         |comp-default-demo $ quote
           defcomp comp-default-demo (states)
@@ -97,17 +97,16 @@
       :configs $ {}
     |app.comp.primes-whirl $ {}
       :ns $ quote
-        ns app.comp.primes-whirl $ :require ([] phlox.core :refer $ [] g >> defcomp circle rect text touch-area) ([] phlox.comp :refer $ [] comp-drag-point comp-slider) ([] phlox.complex :refer $ [] c* c+ c- rad-point)
+        ns app.comp.primes-whirl $ :require ([] phlox.core :refer $ [] g >> defcomp circle rect text touch-area) ([] phlox.comp :refer $ [] comp-drag-point comp-slider) ([] phlox.complex :refer $ [] c* c+ c- rad-point) ([] memof.alias :refer $ [] use)
       :defs $ {}
         |comp-primes-whirl $ quote
-          defcomp comp-primes-whirl ()
+          defcomp comp-primes-whirl () (echo "\"rendering...")
             {} (:children $ {})
               :render $ fn (dict)
                 g
-                  {} (:x 200) (:y 300)
+                  {} (:position $ [] 200 300) (:pure-shape? true)
                   {} (:type :ops)
-                    :ops $ concat
-                      [] $ [] :move-to ([] 0 0)
+                    :ops $ [] ([] :move-to $ [] 0 0) (, &)
                       apply
                         fn (acc n position direction)
                           if (> n $ last primes-list) (, acc)
@@ -120,7 +119,8 @@
                                 , new-position
                                 if (contains? primes-list n) (c* direction $ [] 0 1) (, direction)
                         [] ([]) 0 ([] 0 0) ([] -1 0)
-                      [] ([] :hsl $ [] 0 0 100) ([] :stroke)
+                      [] :hsl $ [] 0 0 100
+                      [] :stroke
               :actions $ {}
         |primes-list $ quote
           def primes-list $ do

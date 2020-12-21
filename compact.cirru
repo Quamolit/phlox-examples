@@ -48,15 +48,13 @@
                 :children $ {}
                   :tabs $ comp-tabs (>> states :tabs) (:tab state)
                     fn (new-tab d!) (d! cursor $ assoc state :tab new-tab)
-                  :primes-whirl $ ; if (= :primes-whirl $ :tab state) (with-cpu-time $ memof-call comp-primes-whirl)
+                  :primes-whirl $ if (= :primes-whirl $ :tab state) (with-cpu-time $ memof-call comp-primes-whirl)
                   :complex $ if (= :complex $ :tab state) (comp-complex $ >> states :complex)
                   :default $ if
                     or (nil? $ :tab state) (= :default $ :tab state)
-                    with-cpu-time $ memof-call comp-default-demo (>> states :default)
+                    memof-call comp-default-demo $ >> states :default
                 :render $ fn (dict)
-                  g
-                    {} (:x 0) (:y 0)
-                    get dict :tabs
+                  g ({}) (get dict :tabs)
                     if (nil? $ :tab state) (get dict :default) (get dict $ :tab state)
                 :actions $ {}
         |comp-default-demo $ quote
@@ -71,9 +69,8 @@
                     fn (position d!) (d! cursor $ assoc state :position position)
                     {}
                 :render $ fn (dict)
-                  g
-                    {} (:x 0) (:y 0)
-                    circle ([] 100 100) 20 $ {} (:fill-color $ [] 200 80 70)
+                  g ({})
+                    circle 20 $ {} (:fill-color $ [] 200 80 70) (:position $ [] 100 100)
                     get dict :d
                 :actions $ {}
         |comp-tabs $ quote
@@ -85,11 +82,10 @@
                   g ({}) & $ ->> ([] :primes-whirl :complex :default)
                     map-indexed $ fn (idx name)
                       g
-                        {}
-                          :x $ + 80 (* idx 120)
-                          :y 40
+                        {} $ :position
+                          [] (+ 80 $ * idx 120) (, 40)
                         touch-area :select cursor $ {} (:rect? true) (:dx 50) (:dy 16) (:data name)
-                        text ([] 0 0) (turn-string name) ({} $ :align :center)
+                        text (turn-string name) ({} $ :align :center)
                 :actions $ {}
                   :select $ fn (e d!)
                     when (= :mouse-up $ :type e)
@@ -160,7 +156,7 @@
       :configs $ {}
     |app.comp.complex $ {}
       :ns $ quote
-        ns app.comp.complex $ :require ([] phlox.core :refer $ [] g >> defcomp circle rect text touch-area) ([] phlox.comp :refer $ [] comp-drag-point comp-slider) ([] phlox.complex :refer $ [] c* c+ c- rad-point) ([] memof.alias :refer $ [] use)
+        ns app.comp.complex $ :require ([] phlox.core :refer $ [] g >> defcomp circle rect text touch-area ops) ([] phlox.comp :refer $ [] comp-drag-point comp-slider) ([] phlox.complex :refer $ [] c* c+ c- rad-point) ([] memof.alias :refer $ [] use)
       :defs $ {}
         |comp-complex $ quote
           defcomp comp-complex (states)
@@ -215,15 +211,12 @@
                             [] :line-to $ folding (:times state) p
                         [] :source-rgb $ [] 200 90 50
                         [] :stroke
-                    circle ([] 200 0) 6 $ {}
-                    text ([] 210 0) "\"1" $ {}
+                    circle 6 $ {} (:position $ [] 200 0)
+                    text "\"1" $ {} (:position $ [] 210 0)
                     , &
                     ->> (:points state)
                       map-indexed $ fn (idx point) (get dict $ str "\"p-" idx)
                     get dict :slider
-        |ops $ quote
-          defn ops (& xs)
-            {} (:type :ops) (:ops xs)
         |folding $ quote
           defn folding (n p)
             let

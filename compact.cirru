@@ -36,7 +36,7 @@
       :configs $ {} (:extension nil)
     |app.comp.container $ {}
       :ns $ quote
-        ns app.comp.container $ :require ([] phlox.core :refer $ [] g >> defcomp circle rect text touch-area) ([] phlox.comp :refer $ [] comp-drag-point comp-slider) ([] phlox.complex :refer $ [] c* c+ c- rad-point) ([] app.comp.primes-whirl :refer $ [] comp-primes-whirl) ([] memof.alias :refer $ [] memof-call)
+        ns app.comp.container $ :require ([] phlox.core :refer $ [] g >> defcomp circle rect text touch-area) ([] phlox.comp :refer $ [] comp-drag-point comp-slider) ([] phlox.complex :refer $ [] c* c+ c- rad-point) ([] app.comp.primes-whirl :refer $ [] comp-primes-whirl) ([] memof.alias :refer $ [] memof-call) ([] app.comp.complex :refer $ [] comp-complex)
       :defs $ {}
         |comp-container $ quote
           defcomp comp-container (store)
@@ -48,7 +48,8 @@
                 :children $ {}
                   :tabs $ comp-tabs (>> states :tabs) (:tab state)
                     fn (new-tab d!) (d! cursor $ assoc state :tab new-tab)
-                  :primes-whirl $ if (= :primes-whirl $ :tab state) (with-cpu-time $ memof-call comp-primes-whirl)
+                  :primes-whirl $ ; if (= :primes-whirl $ :tab state) (with-cpu-time $ memof-call comp-primes-whirl)
+                  :complex $ if (= :complex $ :tab state) (comp-complex $ >> states :complex)
                   :default $ if
                     or (nil? $ :tab state) (= :default $ :tab state)
                     with-cpu-time $ memof-call comp-default-demo (>> states :default)
@@ -81,7 +82,7 @@
                 cursor $ :cursor states
               {} (:children $ {})
                 :render $ fn (dict)
-                  g ({}) & $ ->> ([] :primes-whirl :default)
+                  g ({}) & $ ->> ([] :primes-whirl :complex :default)
                     map-indexed $ fn (idx name)
                       g
                         {}
@@ -125,6 +126,7 @@
         |primes-list $ quote
           def primes-list $ do
             ; with-cpu-time $ ->> (range 1000) (filter is-prime?)
+            display-stack "\"primes computed"
             with-cpu-time $ sieve-primes ([] 2 3 5 7 11 13) 17 3000
         |is-prime? $ quote
           defn is-prime? (n)
@@ -154,5 +156,82 @@
                 , acc
               recur (conj acc n) (inc n) (, limit)
               recur acc (inc n) limit
+      :proc $ quote ()
+      :configs $ {}
+    |app.comp.complex $ {}
+      :ns $ quote
+        ns app.comp.complex $ :require ([] phlox.core :refer $ [] g >> defcomp circle rect text touch-area) ([] phlox.comp :refer $ [] comp-drag-point comp-slider) ([] phlox.complex :refer $ [] c* c+ c- rad-point) ([] memof.alias :refer $ [] use)
+      :defs $ {}
+        |comp-complex $ quote
+          defcomp comp-complex (states)
+            let
+                cursor $ :cursor states
+                state $ either (:data states)
+                  {}
+                    :points $ [] ([] 10 20) ([] 60 60)
+                    :times 2
+                points $ let
+                    a $ first (:points state)
+                    b $ last (:points state)
+                    unit $ c* ([] 0.02 0) (c- b a)
+                  ->> (range 51)
+                    map $ fn (p)
+                      c+ a $ c* unit ([] p 0)
+              {}
+                :children $ merge
+                  {} $ :slider
+                    comp-slider (>> states :slider) ([] 200 -160) (:times state)
+                      fn (v d!)
+                        if (> v 2) (d! cursor $ assoc state :times v) (d! cursor $ assoc state :times 2)
+                      {} (:unit 0.1) (:precision 0)
+                  ->> (:points state)
+                    map-indexed $ fn (idx point)
+                      [] (str "\"p-" idx)
+                        comp-drag-point (>> states $ str "\"p-" idx) (, point)
+                          fn (position d!)
+                            d! cursor $ assoc-in state ([] :points idx) position
+                          {} (:radius 6) (:font-size 10)
+                            :render-text $ fn (p) "\""
+                    pairs-map
+                :actions $ {}
+                :render $ fn (dict)
+                  g
+                    {} $ :position ([] 300 300)
+                    ops ([] :move-to $ [] -200 0) ([] :line-to $ [] 200 0) ([] :move-to $ [] 0 -200) ([] :line-to $ [] 0 200) ([] :hsl $ [] 0 0 100) ([] :stroke)
+                    let
+                        points $ :points state
+                      if (empty? points) (ops)
+                        ops ([] :move-to $ first points) (, &)
+                          ->> (rest points)
+                            map $ fn (p) ([] :line-to p)
+                          [] :source-rgb $ [] 0 0 100
+                          [] :stroke
+                    if (empty? points) (ops)
+                      ops
+                        [] :move-to $ folding (:times state) (first points)
+                        , &
+                        ->> (rest points)
+                          map $ fn (p)
+                            [] :line-to $ folding (:times state) p
+                        [] :source-rgb $ [] 200 90 50
+                        [] :stroke
+                    circle ([] 200 0) 6 $ {}
+                    text ([] 210 0) "\"1" $ {}
+                    , &
+                    ->> (:points state)
+                      map-indexed $ fn (idx point) (get dict $ str "\"p-" idx)
+                    get dict :slider
+        |ops $ quote
+          defn ops (& xs)
+            {} (:type :ops) (:ops xs)
+        |folding $ quote
+          defn folding (n p)
+            let
+                p $ c* p ([] 0.005 0)
+              apply
+                fn (acc level)
+                  if (<= level 1) (c* acc $ [] 200 0)
+                    recur (c* acc p) (- level 1)
+                [] p n
       :proc $ quote ()
       :configs $ {}

@@ -36,7 +36,7 @@
       :configs $ {} (:extension nil)
     |app.comp.container $ {}
       :ns $ quote
-        ns app.comp.container $ :require ([] phlox.core :refer $ [] g >> defcomp circle rect text touch-area) ([] phlox.comp :refer $ [] comp-drag-point comp-slider) ([] phlox.complex :refer $ [] c* c+ c- rad-point) ([] app.comp.primes-whirl :refer $ [] comp-primes-whirl) ([] memof.alias :refer $ [] memof-call) ([] app.comp.complex :refer $ [] comp-complex)
+        ns app.comp.container $ :require ([] phlox.core :refer $ [] g >> defcomp circle rect text touch-area) ([] phlox.comp :refer $ [] comp-drag-point comp-slider) ([] phlox.complex :refer $ [] c* c+ c- rad-point) ([] app.comp.primes-whirl :refer $ [] comp-primes-whirl) ([] memof.alias :refer $ [] memof-call) ([] app.comp.complex :refer $ [] comp-complex) ([] app.comp.rose :refer $ [] comp-draw-rose)
       :defs $ {}
         |comp-container $ quote
           defcomp comp-container (store)
@@ -50,12 +50,15 @@
                     fn (new-tab d!) (d! cursor $ assoc state :tab new-tab)
                   :primes-whirl $ if (= :primes-whirl $ :tab state) (with-cpu-time $ memof-call comp-primes-whirl)
                   :complex $ if (= :complex $ :tab state) (comp-complex $ >> states :complex)
+                  :rose $ if (= :rose $ :tab state) (comp-draw-rose $ >> states :rose)
                   :default $ if
                     or (nil? $ :tab state) (= :default $ :tab state)
                     memof-call comp-default-demo $ >> states :default
                 :render $ fn (dict)
                   g ({}) (get dict :tabs)
-                    if (nil? $ :tab state) (get dict :default) (get dict $ :tab state)
+                    g
+                      {} $ :position ([] 40 100)
+                      if (nil? $ :tab state) (get dict :default) (get dict $ :tab state)
                 :actions $ {}
         |comp-default-demo $ quote
           defcomp comp-default-demo (states)
@@ -70,7 +73,7 @@
                     {}
                 :render $ fn (dict)
                   g ({})
-                    circle 20 $ {} (:fill-color $ [] 200 80 70) (:position $ [] 100 100)
+                    circle 20 $ {} (:fill-color $ [] 200 80 70) (:position $ [] 40 40)
                     get dict :d
                 :actions $ {}
         |comp-tabs $ quote
@@ -79,7 +82,7 @@
                 cursor $ :cursor states
               {} (:children $ {})
                 :render $ fn (dict)
-                  g ({}) & $ ->> ([] :primes-whirl :complex :default)
+                  g ({}) & $ ->> ([] :primes-whirl :complex :rose :default)
                     map-indexed $ fn (idx name)
                       g
                         {} $ :position
@@ -101,7 +104,7 @@
             {} (:children $ {})
               :render $ fn (dict)
                 g
-                  {} (:position $ [] 200 300) (:pure-shape? true)
+                  {} (:position $ [] 100 240) (:pure-shape? true)
                   {} (:type :ops)
                     :ops $ [] ([] :move-to $ [] 0 0) (, &)
                       apply
@@ -226,5 +229,41 @@
                   if (<= level 1) (c* acc $ [] 200 0)
                     recur (c* acc p) (- level 1)
                 [] p n
+      :proc $ quote ()
+      :configs $ {}
+    |app.comp.rose $ {}
+      :ns $ quote
+        ns app.comp.rose $ :require ([] phlox.core :refer $ [] g >> defcomp circle rect text touch-area polyline) ([] phlox.comp :refer $ [] comp-drag-point comp-slider) ([] phlox.complex :refer $ [] c* c+ c- rad-point) ([] memof.alias :refer $ [] use)
+      :defs $ {}
+        |comp-draw-rose $ quote
+          defcomp comp-draw-rose (states)
+            let
+                cursor $ :cursor states
+                state $ either (:data states)
+                  {} (:k 1) (:speed 0.01)
+                k $ :k state
+                speed $ :speed state
+                stops $ ->> (range 1000)
+                  map $ fn (n)
+                    c* (rad-point $ * n k speed)
+                      []
+                        * 300 $ cos (* n speed)
+                        , 0
+              {}
+                :children $ {}
+                  :k $ comp-slider (>> states :k) ([] 100 0) (:k state)
+                    fn (v d!) (d! cursor $ assoc state :k v)
+                    {} $ :unit 0.01
+                  :speed $ comp-slider (>> states :speed) ([] 300 0) (:speed state)
+                    fn (v d!) (d! cursor $ assoc state :speed v)
+                    {} $ :unit 0.001
+                :actions $ {}
+                :render $ fn (dict)
+                  g ({})
+                    g
+                      {} (:position $ [] 300 300) (:pure-shape? true)
+                      polyline stops $ {} (:line-color $ [] 0 0 100)
+                    get dict :k
+                    get dict :speed
       :proc $ quote ()
       :configs $ {}

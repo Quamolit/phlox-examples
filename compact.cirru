@@ -179,10 +179,10 @@
               {}
                 :children $ merge
                   {} $ :slider
-                    comp-slider (>> states :slider) ([] 200 -160) (:times state)
+                    comp-slider (>> states :slider) (:times state)
                       fn (v d!)
                         if (> v 2) (d! cursor $ assoc state :times v) (d! cursor $ assoc state :times 2)
-                      {} (:unit 0.1) (:precision 0)
+                      {} (:unit 0.1) (:precision 0) (:position $ [] 200 -160)
                   ->> (:points state)
                     map-indexed $ fn (idx point)
                       [] (str "\"p-" idx)
@@ -240,10 +240,11 @@
             let
                 cursor $ :cursor states
                 state $ either (:data states)
-                  {} (:k 1) (:speed 0.01)
+                  {} (:k 1) (:speed 0.01) (:size 1000)
                 k $ :k state
                 speed $ :speed state
-                stops $ ->> (range 1000)
+                stops $ ->>
+                  range $ either (:size state) 100
                   map $ fn (n)
                     c* (rad-point $ * n k speed)
                       []
@@ -251,12 +252,17 @@
                         , 0
               {}
                 :children $ {}
-                  :k $ comp-slider (>> states :k) ([] 100 0) (:k state)
+                  :k $ comp-slider (>> states :k) (:k state)
                     fn (v d!) (d! cursor $ assoc state :k v)
-                    {} $ :unit 0.01
-                  :speed $ comp-slider (>> states :speed) ([] 300 0) (:speed state)
+                    {} (:unit 0.001) (:position $ [] 500 0) (:title "\"k") (:precision 8)
+                  :speed $ comp-slider (>> states :speed) (:speed state)
                     fn (v d!) (d! cursor $ assoc state :speed v)
-                    {} $ :unit 0.001
+                    {} (:unit 0.0001) (:position $ [] 550 40) (:precision 6) (:title "\"Speed")
+                  :size $ comp-slider (>> states :size) (:size state)
+                    fn (v d!)
+                      d! cursor $ assoc state :size
+                        if (&> v 2) v 2
+                    {} (:unit 2) (:position $ [] 600 80) (:precision 0) (:title "\"Size")
                 :actions $ {}
                 :render $ fn (dict)
                   g ({})
@@ -265,5 +271,6 @@
                       polyline stops $ {} (:line-color $ [] 0 0 100)
                     get dict :k
                     get dict :speed
+                    get dict :size
       :proc $ quote ()
       :configs $ {}

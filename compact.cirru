@@ -31,7 +31,7 @@
         |reload! $ quote
           defn reload! () (reset-calling-caches!) (echo "\"Reload!") (render-page)
         |on-error $ quote
-          defn on-error (message) (; draw-error-message message)
+          defn on-error (message) (draw-error-message message)
       :proc $ quote ()
       :configs $ {} (:extension nil)
     |app.comp.container $ {}
@@ -57,7 +57,7 @@
                 :render $ fn (dict)
                   g ({}) (get dict :tabs)
                     g
-                      {} $ :position ([] 40 100)
+                      {} $ :position ([] 40 80)
                       if (nil? $ :tab state) (get dict :default) (get dict $ :tab state)
                 :actions $ {}
         |comp-default-demo $ quote
@@ -182,7 +182,7 @@
                     comp-slider (>> states :slider) (:times state)
                       fn (v d!)
                         if (> v 2) (d! cursor $ assoc state :times v) (d! cursor $ assoc state :times 2)
-                      {} (:unit 0.1) (:precision 0) (:position $ [] 200 -160)
+                      {} (:unit 0.1) (:precision 0) (:position $ [] 200 -160) (:title "\"times")
                   ->> (:points state)
                     map-indexed $ fn (idx point)
                       [] (str "\"p-" idx)
@@ -240,36 +240,49 @@
             let
                 cursor $ :cursor states
                 state $ either (:data states)
-                  {} (:k 1) (:speed 0.01) (:size 1000)
+                  {} (:k 1) (:j 1) (:speed 0.01) (:size 1000) (:offset $ [] 0 0)
                 k $ :k state
+                j $ either (:j state) 1
                 speed $ :speed state
                 stops $ ->>
                   range $ either (:size state) 100
                   map $ fn (n)
-                    c* (rad-point $ * n k speed)
-                      []
-                        * 300 $ cos (* n speed)
-                        , 0
+                    c* (rad-point $ * n k speed 0.001)
+                      c+ (:offset state)
+                        []
+                          * 300 $ cos (* n j speed 0.001)
+                          , 0
               {}
                 :children $ {}
-                  :k $ comp-slider (>> states :k) (:k state)
-                    fn (v d!) (d! cursor $ assoc state :k v)
-                    {} (:unit 0.001) (:position $ [] 500 0) (:title "\"k") (:precision 8)
+                  :k $ comp-slider (>> states :k) k
+                    fn (v d!)
+                      d! cursor $ assoc state :k (round v)
+                    {} (:unit 0.1) (:position $ [] 300 0) (:title "\"k") (:precision 0)
+                  :j $ comp-slider (>> states :j) j
+                    fn (v d!)
+                      d! cursor $ assoc state :j (round v)
+                    {} (:unit 0.1) (:position $ [] 300 20) (:title "\"j") (:precision 0)
                   :speed $ comp-slider (>> states :speed) (:speed state)
                     fn (v d!) (d! cursor $ assoc state :speed v)
-                    {} (:unit 0.0001) (:position $ [] 550 40) (:precision 6) (:title "\"Speed")
+                    {} (:unit 0.06) (:position $ [] 400 0) (:precision 4) (:title "\"Speed")
                   :size $ comp-slider (>> states :size) (:size state)
                     fn (v d!)
                       d! cursor $ assoc state :size
                         if (&> v 2) v 2
-                    {} (:unit 2) (:position $ [] 600 80) (:precision 0) (:title "\"Size")
+                    {} (:unit 2) (:position $ [] 400 20) (:precision 0) (:title "\"Size")
+                  :offset $ comp-drag-point (>> states :offset) (:offset state)
+                    fn (p d!) (d! cursor $ assoc state :offset p)
+                    {} (:radius 6)
+                      :render-text $ fn (p) "\""
                 :actions $ {}
                 :render $ fn (dict)
                   g ({})
                     g
-                      {} (:position $ [] 300 300) (:pure-shape? true)
-                      polyline stops $ {} (:line-color $ [] 0 0 100)
+                      {} $ :position ([] 300 360)
+                      polyline stops $ {} (:line-color $ [] 200 80 80 0.8)
+                      get dict :offset
                     get dict :k
+                    get dict :j
                     get dict :speed
                     get dict :size
       :proc $ quote ()

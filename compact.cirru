@@ -244,14 +244,17 @@
                 k $ :k state
                 j $ either (:j state) 1
                 speed $ :speed state
+                base-speed $ &* speed 0.001
                 stops $ ->>
                   range $ either (:size state) 100
                   map $ fn (n)
-                    c* (rad-point $ * n k speed 0.001)
-                      c+ (:offset state)
-                        []
-                          * 300 $ cos (* n j speed 0.001)
-                          , 0
+                    let
+                        base $ &* n base-speed
+                      c* (rad-point $ &* k base)
+                        c+ (:offset state)
+                          []
+                            &* 300 $ cos (&* j base)
+                            , 0
               {}
                 :children $ {}
                   :k $ comp-slider (>> states :k) k

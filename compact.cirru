@@ -31,12 +31,12 @@
         |reload! $ quote
           defn reload! () (reset-calling-caches!) (echo "\"Reload!") (render-page)
         |on-error $ quote
-          defn on-error (message) (; draw-error-message message)
+          defn on-error (message) (draw-error-message message)
       :proc $ quote ()
       :configs $ {} (:extension nil)
     |app.comp.container $ {}
       :ns $ quote
-        ns app.comp.container $ :require ([] phlox.core :refer $ [] g >> defcomp circle rect text touch-area) ([] phlox.comp :refer $ [] comp-drag-point comp-slider) ([] phlox.complex :refer $ [] c* c+ c- rad-point) ([] app.comp.primes-whirl :refer $ [] comp-primes-whirl) ([] memof.alias :refer $ [] memof-call) ([] app.comp.complex :refer $ [] comp-complex)
+        ns app.comp.container $ :require ([] phlox.core :refer $ [] g >> defcomp circle rect text touch-area) ([] phlox.comp :refer $ [] comp-drag-point comp-slider) ([] phlox.complex :refer $ [] c* c+ c- rad-point) ([] app.comp.primes-whirl :refer $ [] comp-primes-whirl) ([] memof.alias :refer $ [] memof-call) ([] app.comp.complex :refer $ [] comp-complex) ([] app.comp.rose :refer $ [] comp-draw-rose)
       :defs $ {}
         |comp-container $ quote
           defcomp comp-container (store)
@@ -50,12 +50,15 @@
                     fn (new-tab d!) (d! cursor $ assoc state :tab new-tab)
                   :primes-whirl $ if (= :primes-whirl $ :tab state) (with-cpu-time $ memof-call comp-primes-whirl)
                   :complex $ if (= :complex $ :tab state) (comp-complex $ >> states :complex)
+                  :rose $ if (= :rose $ :tab state) (comp-draw-rose $ >> states :rose)
                   :default $ if
                     or (nil? $ :tab state) (= :default $ :tab state)
                     memof-call comp-default-demo $ >> states :default
                 :render $ fn (dict)
                   g ({}) (get dict :tabs)
-                    if (nil? $ :tab state) (get dict :default) (get dict $ :tab state)
+                    g
+                      {} $ :position ([] 40 80)
+                      if (nil? $ :tab state) (get dict :default) (get dict $ :tab state)
                 :actions $ {}
         |comp-default-demo $ quote
           defcomp comp-default-demo (states)
@@ -70,7 +73,7 @@
                     {}
                 :render $ fn (dict)
                   g ({})
-                    circle 20 $ {} (:fill-color $ [] 200 80 70) (:position $ [] 100 100)
+                    circle 20 $ {} (:fill-color $ [] 200 80 70) (:position $ [] 40 40)
                     get dict :d
                 :actions $ {}
         |comp-tabs $ quote
@@ -79,7 +82,7 @@
                 cursor $ :cursor states
               {} (:children $ {})
                 :render $ fn (dict)
-                  g ({}) & $ ->> ([] :primes-whirl :complex :default)
+                  g ({}) & $ ->> ([] :primes-whirl :complex :rose :default)
                     map-indexed $ fn (idx name)
                       g
                         {} $ :position
@@ -101,7 +104,7 @@
             {} (:children $ {})
               :render $ fn (dict)
                 g
-                  {} (:position $ [] 200 300) (:pure-shape? true)
+                  {} (:position $ [] 100 240) (:pure-shape? true)
                   {} (:type :ops)
                     :ops $ [] ([] :move-to $ [] 0 0) (, &)
                       apply
@@ -176,10 +179,10 @@
               {}
                 :children $ merge
                   {} $ :slider
-                    comp-slider (>> states :slider) ([] 200 -160) (:times state)
+                    comp-slider (>> states :slider) (:times state)
                       fn (v d!)
                         if (> v 2) (d! cursor $ assoc state :times v) (d! cursor $ assoc state :times 2)
-                      {} (:unit 0.1) (:precision 0)
+                      {} (:unit 0.1) (:precision 0) (:position $ [] 200 -160) (:title "\"times")
                   ->> (:points state)
                     map-indexed $ fn (idx point)
                       [] (str "\"p-" idx)
@@ -226,5 +229,64 @@
                   if (<= level 1) (c* acc $ [] 200 0)
                     recur (c* acc p) (- level 1)
                 [] p n
+      :proc $ quote ()
+      :configs $ {}
+    |app.comp.rose $ {}
+      :ns $ quote
+        ns app.comp.rose $ :require ([] phlox.core :refer $ [] g >> defcomp circle rect text touch-area polyline) ([] phlox.comp :refer $ [] comp-drag-point comp-slider) ([] phlox.complex :refer $ [] c* c+ c- rad-point) ([] memof.alias :refer $ [] use)
+      :defs $ {}
+        |comp-draw-rose $ quote
+          defcomp comp-draw-rose (states)
+            let
+                cursor $ :cursor states
+                state $ either (:data states)
+                  {} (:k 1) (:j 1) (:speed 0.01) (:size 1000) (:offset $ [] 0 0)
+                k $ :k state
+                j $ either (:j state) 1
+                speed $ :speed state
+                base-speed $ &* speed 0.001
+                stops $ ->>
+                  range $ either (:size state) 100
+                  map $ fn (n)
+                    let
+                        base $ &* n base-speed
+                      c* (rad-point $ &* k base)
+                        c+ (:offset state)
+                          []
+                            &* 300 $ cos (&* j base)
+                            , 0
+              {}
+                :children $ {}
+                  :k $ comp-slider (>> states :k) k
+                    fn (v d!)
+                      d! cursor $ assoc state :k (round v)
+                    {} (:unit 0.1) (:position $ [] 300 0) (:title "\"k") (:precision 0)
+                  :j $ comp-slider (>> states :j) j
+                    fn (v d!)
+                      d! cursor $ assoc state :j (round v)
+                    {} (:unit 0.1) (:position $ [] 300 20) (:title "\"j") (:precision 0)
+                  :speed $ comp-slider (>> states :speed) (:speed state)
+                    fn (v d!) (d! cursor $ assoc state :speed v)
+                    {} (:unit 0.06) (:position $ [] 400 0) (:precision 4) (:title "\"Speed")
+                  :size $ comp-slider (>> states :size) (:size state)
+                    fn (v d!)
+                      d! cursor $ assoc state :size
+                        if (&> v 2) v 2
+                    {} (:unit 2) (:position $ [] 400 20) (:precision 0) (:title "\"Size")
+                  :offset $ comp-drag-point (>> states :offset) (:offset state)
+                    fn (p d!) (d! cursor $ assoc state :offset p)
+                    {} (:radius 6)
+                      :render-text $ fn (p) "\""
+                :actions $ {}
+                :render $ fn (dict)
+                  g ({})
+                    g
+                      {} $ :position ([] 300 360)
+                      polyline stops $ {} (:line-color $ [] 200 80 80 0.8)
+                      get dict :offset
+                    get dict :k
+                    get dict :j
+                    get dict :speed
+                    get dict :size
       :proc $ quote ()
       :configs $ {}

@@ -15,7 +15,7 @@
                 |j $ {} (:type :expr) (:by |u0) (:at 1606311445673)
                   :data $ {}
                     |T $ {} (:type :leaf) (:by |u0) (:at 1606311445877) (:text |[])
-                    |j $ {} (:type :leaf) (:by |u0) (:at 1606311453632) (:text |phlox.core)
+                    |j $ {} (:type :leaf) (:by |u0) (:at 1606311453632) (:text |corokia.core)
                     |r $ {} (:type :leaf) (:by |u0) (:at 1606311454451) (:text |:refer)
                     |v $ {} (:type :expr) (:by |u0) (:at 1606311454638)
                       :data $ {}
@@ -28,7 +28,7 @@
                 |r $ {} (:type :expr) (:by |u0) (:at 1606311491783)
                   :data $ {}
                     |T $ {} (:type :leaf) (:by |u0) (:at 1606311492057) (:text |[])
-                    |j $ {} (:type :leaf) (:by |u0) (:at 1606311500078) (:text |phlox.comp)
+                    |j $ {} (:type :leaf) (:by |u0) (:at 1606311500078) (:text |corokia.comp)
                     |r $ {} (:type :leaf) (:by |u0) (:at 1606311501263) (:text |:refer)
                     |v $ {} (:type :expr) (:by |u0) (:at 1606311501469)
                       :data $ {}
@@ -252,7 +252,7 @@
                 |j $ {} (:type :expr) (:by |u0) (:at 1607915121448)
                   :data $ {}
                     |T $ {} (:type :leaf) (:by |u0) (:at 1607915121448) (:text |[])
-                    |j $ {} (:type :leaf) (:by |u0) (:at 1607915121448) (:text |phlox.core)
+                    |j $ {} (:type :leaf) (:by |u0) (:at 1607915121448) (:text |corokia.core)
                     |r $ {} (:type :leaf) (:by |u0) (:at 1607915121448) (:text |:refer)
                     |v $ {} (:type :expr) (:by |u0) (:at 1607915121448)
                       :data $ {}
@@ -267,7 +267,7 @@
                 |r $ {} (:type :expr) (:by |u0) (:at 1607915121448)
                   :data $ {}
                     |T $ {} (:type :leaf) (:by |u0) (:at 1607915121448) (:text |[])
-                    |j $ {} (:type :leaf) (:by |u0) (:at 1607915121448) (:text |phlox.comp)
+                    |j $ {} (:type :leaf) (:by |u0) (:at 1607915121448) (:text |corokia.comp)
                     |r $ {} (:type :leaf) (:by |u0) (:at 1607915121448) (:text |:refer)
                     |v $ {} (:type :expr) (:by |u0) (:at 1607915121448)
                       :data $ {}
@@ -277,7 +277,7 @@
                 |v $ {} (:type :expr) (:by |u0) (:at 1607915121448)
                   :data $ {}
                     |T $ {} (:type :leaf) (:by |u0) (:at 1607915121448) (:text |[])
-                    |j $ {} (:type :leaf) (:by |u0) (:at 1607915125739) (:text |phlox.complex)
+                    |j $ {} (:type :leaf) (:by |u0) (:at 1607915125739) (:text |corokia.complex)
                     |r $ {} (:type :leaf) (:by |u0) (:at 1607915121448) (:text |:refer)
                     |v $ {} (:type :expr) (:by |u0) (:at 1607915121448)
                       :data $ {}
@@ -879,7 +879,7 @@
                 |j $ {} (:type :expr) (:by |u0) (:at 1607920466029)
                   :data $ {}
                     |T $ {} (:type :leaf) (:by |u0) (:at 1607920466029) (:text |[])
-                    |j $ {} (:type :leaf) (:by |u0) (:at 1607920466029) (:text |phlox.core)
+                    |j $ {} (:type :leaf) (:by |u0) (:at 1607920466029) (:text |corokia.core)
                     |r $ {} (:type :leaf) (:by |u0) (:at 1607920466029) (:text |:refer)
                     |v $ {} (:type :expr) (:by |u0) (:at 1607920485031)
                       :data $ {}
@@ -894,7 +894,7 @@
                 |r $ {} (:type :expr) (:by |u0) (:at 1607920466029)
                   :data $ {}
                     |T $ {} (:type :leaf) (:by |u0) (:at 1607920466029) (:text |[])
-                    |j $ {} (:type :leaf) (:by |u0) (:at 1607920466029) (:text |phlox.comp)
+                    |j $ {} (:type :leaf) (:by |u0) (:at 1607920466029) (:text |corokia.comp)
                     |r $ {} (:type :leaf) (:by |u0) (:at 1607920466029) (:text |:refer)
                     |v $ {} (:type :expr) (:by |u0) (:at 1607920466029)
                       :data $ {}
@@ -904,7 +904,7 @@
                 |v $ {} (:type :expr) (:by |u0) (:at 1607920466029)
                   :data $ {}
                     |T $ {} (:type :leaf) (:by |u0) (:at 1607920466029) (:text |[])
-                    |j $ {} (:type :leaf) (:by |u0) (:at 1607920466029) (:text |phlox.complex)
+                    |j $ {} (:type :leaf) (:by |u0) (:at 1607920466029) (:text |corokia.complex)
                     |r $ {} (:type :leaf) (:by |u0) (:at 1607920466029) (:text |:refer)
                     |v $ {} (:type :expr) (:by |u0) (:at 1607920466029)
                       :data $ {}
@@ -1336,7 +1336,7 @@
                 |j $ {} (:type :expr) (:by |u0) (:at 1608381204296)
                   :data $ {}
                     |T $ {} (:type :leaf) (:by |u0) (:at 1608381204296) (:text |[])
-                    |j $ {} (:type :leaf) (:by |u0) (:at 1608381204296) (:text |phlox.core)
+                    |j $ {} (:type :leaf) (:by |u0) (:at 1608381204296) (:text |corokia.core)
                     |r $ {} (:type :leaf) (:by |u0) (:at 1608381204296) (:text |:refer)
                     |v $ {} (:type :expr) (:by |u0) (:at 1608381204296)
                       :data $ {}
@@ -1352,7 +1352,7 @@
                 |r $ {} (:type :expr) (:by |u0) (:at 1608381204296)
                   :data $ {}
                     |T $ {} (:type :leaf) (:by |u0) (:at 1608381204296) (:text |[])
-                    |j $ {} (:type :leaf) (:by |u0) (:at 1608381204296) (:text |phlox.comp)
+                    |j $ {} (:type :leaf) (:by |u0) (:at 1608381204296) (:text |corokia.comp)
                     |r $ {} (:type :leaf) (:by |u0) (:at 1608381204296) (:text |:refer)
                     |v $ {} (:type :expr) (:by |u0) (:at 1608381204296)
                       :data $ {}
@@ -1362,7 +1362,7 @@
                 |v $ {} (:type :expr) (:by |u0) (:at 1608381204296)
                   :data $ {}
                     |T $ {} (:type :leaf) (:by |u0) (:at 1608381204296) (:text |[])
-                    |j $ {} (:type :leaf) (:by |u0) (:at 1608381204296) (:text |phlox.complex)
+                    |j $ {} (:type :leaf) (:by |u0) (:at 1608381204296) (:text |corokia.complex)
                     |r $ {} (:type :leaf) (:by |u0) (:at 1608381204296) (:text |:refer)
                     |v $ {} (:type :expr) (:by |u0) (:at 1608381204296)
                       :data $ {}
@@ -2041,7 +2041,7 @@
                 |j $ {} (:type :expr) (:by |u0) (:at 1609431320274)
                   :data $ {}
                     |T $ {} (:type :leaf) (:by |u0) (:at 1609431320274) (:text |[])
-                    |j $ {} (:type :leaf) (:by |u0) (:at 1609431320274) (:text |phlox.core)
+                    |j $ {} (:type :leaf) (:by |u0) (:at 1609431320274) (:text |corokia.core)
                     |r $ {} (:type :leaf) (:by |u0) (:at 1609431320274) (:text |:refer)
                     |v $ {} (:type :expr) (:by |u0) (:at 1609431320274)
                       :data $ {}
@@ -2057,7 +2057,7 @@
                 |r $ {} (:type :expr) (:by |u0) (:at 1609431320274)
                   :data $ {}
                     |T $ {} (:type :leaf) (:by |u0) (:at 1609431320274) (:text |[])
-                    |j $ {} (:type :leaf) (:by |u0) (:at 1609431320274) (:text |phlox.comp)
+                    |j $ {} (:type :leaf) (:by |u0) (:at 1609431320274) (:text |corokia.comp)
                     |r $ {} (:type :leaf) (:by |u0) (:at 1609431320274) (:text |:refer)
                     |v $ {} (:type :expr) (:by |u0) (:at 1609431320274)
                       :data $ {}
@@ -2067,7 +2067,7 @@
                 |v $ {} (:type :expr) (:by |u0) (:at 1609431320274)
                   :data $ {}
                     |T $ {} (:type :leaf) (:by |u0) (:at 1609431320274) (:text |[])
-                    |j $ {} (:type :leaf) (:by |u0) (:at 1609431320274) (:text |phlox.complex)
+                    |j $ {} (:type :leaf) (:by |u0) (:at 1609431320274) (:text |corokia.complex)
                     |r $ {} (:type :leaf) (:by |u0) (:at 1609431320274) (:text |:refer)
                     |v $ {} (:type :expr) (:by |u0) (:at 1609431320274)
                       :data $ {}
@@ -2614,4 +2614,4 @@
                                       |r $ {} (:type :leaf) (:by |u0) (:at 1609569722012) (:text |:j)
         :proc $ {} (:type :expr) (:by |u0) (:at 1609431282437) (:data $ {})
         :configs $ {}
-  :configs $ {} (:extension |.cljs) (:output |src) (:port 6001) (:local-ui? false) (:compact-output? true) (:init-fn |app.main/main!) (:reload-fn |app.main/reload!) (:modules $ [] |phlox/compact.cirru |memof/compact.cirru |lilac/compact.cirru)
+  :configs $ {} (:extension |.cljs) (:output |src) (:port 6001) (:local-ui? false) (:compact-output? true) (:init-fn |app.main/main!) (:reload-fn |app.main/reload!) (:modules $ [] |corokia/compact.cirru |memof/compact.cirru |lilac/compact.cirru)

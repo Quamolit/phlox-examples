@@ -1,10 +1,10 @@
 
 {} (:package |app)
-  :configs $ {} (:init-fn |app.main/main!) (:reload-fn |app.main/reload!) (:modules $ [] |phlox/compact.cirru |memof/compact.cirru |lilac/compact.cirru) (:version nil)
+  :configs $ {} (:init-fn |app.main/main!) (:reload-fn |app.main/reload!) (:modules $ [] |corokia/compact.cirru |memof/compact.cirru |lilac/compact.cirru) (:version nil)
   :files $ {}
     |app.main $ {}
       :ns $ quote
-        ns app.main $ :require ([] phlox.core :refer $ [] >> defcomp render-app! handle-tree-event update-states) ([] phlox.comp :refer $ [] comp-drag-point comp-slider) ([] app.comp.container :refer $ [] comp-container) ([] memof.alias :refer $ [] reset-calling-caches! tick-calling-loop!)
+        ns app.main $ :require ([] corokia.core :refer $ [] >> defcomp render-app! handle-tree-event update-states) ([] corokia.comp :refer $ [] comp-drag-point comp-slider) ([] app.comp.container :refer $ [] comp-container) ([] memof.alias :refer $ [] reset-calling-caches! tick-calling-loop!)
       :defs $ {}
         |render-page $ quote
           defn render-page ()
@@ -36,7 +36,7 @@
       :configs $ {} (:extension nil)
     |app.comp.container $ {}
       :ns $ quote
-        ns app.comp.container $ :require ([] phlox.core :refer $ [] g >> defcomp circle rect text touch-area) ([] phlox.comp :refer $ [] comp-drag-point comp-slider) ([] phlox.complex :refer $ [] c* c+ c- rad-point) ([] app.comp.primes-whirl :refer $ [] comp-primes-whirl) ([] memof.alias :refer $ [] memof-call) ([] app.comp.complex :refer $ [] comp-complex) ([] app.comp.rose :refer $ [] comp-draw-rose)
+        ns app.comp.container $ :require ([] corokia.core :refer $ [] g >> defcomp circle rect text touch-area) ([] corokia.comp :refer $ [] comp-drag-point comp-slider) ([] corokia.complex :refer $ [] c* c+ c- rad-point) ([] app.comp.primes-whirl :refer $ [] comp-primes-whirl) ([] memof.alias :refer $ [] memof-call) ([] app.comp.complex :refer $ [] comp-complex) ([] app.comp.rose :refer $ [] comp-draw-rose)
       :defs $ {}
         |comp-container $ quote
           defcomp comp-container (store)
@@ -97,7 +97,7 @@
       :configs $ {}
     |app.comp.primes-whirl $ {}
       :ns $ quote
-        ns app.comp.primes-whirl $ :require ([] phlox.core :refer $ [] g >> defcomp circle rect text touch-area) ([] phlox.comp :refer $ [] comp-drag-point comp-slider) ([] phlox.complex :refer $ [] c* c+ c- rad-point) ([] memof.alias :refer $ [] use)
+        ns app.comp.primes-whirl $ :require ([] corokia.core :refer $ [] g >> defcomp circle rect text touch-area) ([] corokia.comp :refer $ [] comp-drag-point comp-slider) ([] corokia.complex :refer $ [] c* c+ c- rad-point) ([] memof.alias :refer $ [] use)
       :defs $ {}
         |comp-primes-whirl $ quote
           defcomp comp-primes-whirl () (echo "\"rendering...")
@@ -159,7 +159,7 @@
       :configs $ {}
     |app.comp.complex $ {}
       :ns $ quote
-        ns app.comp.complex $ :require ([] phlox.core :refer $ [] g >> defcomp circle rect text touch-area ops) ([] phlox.comp :refer $ [] comp-drag-point comp-slider) ([] phlox.complex :refer $ [] c* c+ c- rad-point) ([] memof.alias :refer $ [] use)
+        ns app.comp.complex $ :require ([] corokia.core :refer $ [] g >> defcomp circle rect text touch-area ops) ([] corokia.comp :refer $ [] comp-drag-point comp-slider) ([] corokia.complex :refer $ [] c* c+ c- rad-point) ([] memof.alias :refer $ [] use)
       :defs $ {}
         |comp-complex $ quote
           defcomp comp-complex (states)
@@ -233,7 +233,7 @@
       :configs $ {}
     |app.comp.rose $ {}
       :ns $ quote
-        ns app.comp.rose $ :require ([] phlox.core :refer $ [] g >> defcomp circle rect text touch-area polyline) ([] phlox.comp :refer $ [] comp-drag-point comp-slider) ([] phlox.complex :refer $ [] c* c+ c- rad-point) ([] memof.alias :refer $ [] use)
+        ns app.comp.rose $ :require ([] corokia.core :refer $ [] g >> defcomp circle rect text touch-area polyline) ([] corokia.comp :refer $ [] comp-drag-point comp-slider) ([] corokia.complex :refer $ [] c* c+ c- rad-point) ([] memof.alias :refer $ [] use)
       :defs $ {}
         |comp-draw-rose $ quote
           defcomp comp-draw-rose (states)
